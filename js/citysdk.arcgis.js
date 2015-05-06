@@ -20,14 +20,20 @@ function ArcgisModule() {
 * @param {function} callback A callback, which accepts a response parameter
 */
 ArcgisModule.prototype.APIRequest = function(request, callback) {
-  var request = CitySDK.prototype.sdkInstance.ajaxRequest(request.url);
+  var url = request.url.replace(/(Server\/\d+).*$/,'$1/query?f=json&where=1=1&outFields=*');
+  var request = CitySDK.prototype.sdkInstance.ajaxRequest(url);
 
   //Attach a completion event to the promise
   request.done(function(response) {
     //Turn it into json
     var jsonObject = $.parseJSON(response);
     //Call the callback
-    callback(jsonObject);
+    if(jsonObject.error === null || jsonObject.error === undefined) {
+      callback(jsonObject);
+    } else {
+      console.log("Error in CitySDK.Arcgis", jsonObject)
+    }
+    
   });    
   return;
 };
