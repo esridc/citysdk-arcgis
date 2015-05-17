@@ -19,11 +19,8 @@
         var sdk = new CitySDK();
         var arcgis = sdk.modules.arcgis;
         var census = sdk.modules.census;
+        census.enable("d9084c5c4a0e92c442406b5eae0f14ec71d83569");
 
-        function getApiKey() {
-            apiKey = prompt("Enter your Census API Key","API Key");
-            census.enable(apiKey);
-        };
         getApiKey();
 
         var data = {};
