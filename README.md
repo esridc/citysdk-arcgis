@@ -16,6 +16,14 @@ git clone git@github.com:uscensusbureau/citysdk.git
 open -a 'Google Chrome' citysdk-arcgis/examples/index.html
 ```
 
+## Examples
+
+Simple, nonsensical demos meant to show the technical integration.
+
+- [Listing](http://esridc.github.io/citysdk-arcgis/examples/index.html) - Business listings of DC Ward 6A compared with tract level median incomes
+- [Chart](http://esridc.github.io/citysdk-arcgis/examples/chart.html) - compares DC school enrollment against local census block group population
+- [Map](http://esridc.github.io/citysdk-arcgis/examples/map.html) - Maryland census counties layered with priority funding
+
 ## License
 
 Copyright 2015 Esri
