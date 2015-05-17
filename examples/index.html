@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CitySDK - USA Map - Demographics Example</title>
+    <title>CitySDK ArcGIS - DC Business Licenses example</title>
 
     <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
     <script src="../../citysdk/js/citysdk.js" type="text/javascript"></script>
@@ -12,23 +12,60 @@
 
         var sdk = new CitySDK();
         var arcgis = sdk.modules.arcgis;
+        var census = sdk.modules.census;
+
+        function getApiKey() {
+            apiKey = prompt("Enter your Census API Key","API Key");
+            census.enable(apiKey);
+        };
+        getApiKey();
 
         jQuery(document).ready(function() {
-            request = { "url": "http://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/CDW_Feeds/MapServer/0" };
+            request = { 
+                "url": "http://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/CDW_Feeds/MapServer/0",
+                "where": [
+                    "LICENSESTATUS='ACTIVE'",
+                    "ANC='6A'"
+                ]
+            };
 
             arcgis.APIRequest(request,function(response) {
                 var message = [];
 
                 $.map(response.features, function(feature,i) {
-                    message.push(feature.attributes[response.displayFieldName])
+                    var request = {
+                        "lat": feature.geometry.y,
+                        "lng": feature.geometry.x,
+                        "level": "tract",
+                        "container": "place",
+                        "variables": [
+                            "income",
+                            "population",
+                            "median_male_age"
+                        ]
+                    };
+
+                    var callback = function(response) {
+                        $('#output  tr:last').after(
+                            '<tr><td>' + feature.attributes['TRADE_NAME'] + '</td>' +
+                            '<td>' + feature.attributes['WARD'] + '</td>' +
+                            '<td>' + response.data.income +'</td></tr>'
+                        );                        
+                    };
+
+                    census.APIRequest(request, callback);
+
+                    
                 });
                 
-                $('#output').html(message.join('<br/>'));
             });
         });
     </script>
 </head>
 <body style="margin: 0px; padding: 0px;">
-<div id="output"></div>
+<h3>Basic Business License for Washington, DC</h3>
+<table id="output">
+    <tr><td>Name</td><td>Ward</td><td>Median Income from ACS</td></tr>
+</table>
 </body>
 </html>
