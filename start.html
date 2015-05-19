@@ -1,0 +1,104 @@
+---
+layout: default
+---
+
+
+<!-- Example row of columns -->
+<div class="row">
+  <div class="col-md-6">
+    <h2>GeoEnrichment</h2>
+    <p>Local Business Licenses for Washington, DC compared with the Census Tract Median Income.</p>
+    <p><a class="btn btn-default" href="#" onclick="runDemo()">Run Demo</a></p>
+    <pre>
+var sdk = new CitySDK();
+var arcgis = sdk.modules.arcgis;
+var census = sdk.modules.census;    
+service = { 
+  "url": "http://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/CDW_Feeds/MapServer/0",
+  "where": [
+      "LICENSESTATUS='ACTIVE'",
+      "ANC='6A'"
+  ]
+};
+arcgis.APIRequest(service, function(response) {
+  var message = [];
+
+  $.map(response.features, function(feature,i) {
+    var request = {
+      "lat": feature.geometry.y,
+      "lng": feature.geometry.x,
+      "level": "tract",
+      "container": "place",
+      "variables": [
+        "income"
+      ]
+    };
+
+    var callback = function(response) {
+      $('#output  tr:last').after(
+        '<tr><td>' + feature.attributes['TRADE_NAME'] + '</td>' +
+        '<td>' + feature.attributes['WARD'] + '</td>' +
+        '<td>' + response.data.income +'</td></tr>'
+      );                        
+    };
+
+    census.APIRequest(request, callback);
+  });
+});
+
+    </pre>
+  </div>
+  <div class="col-md-6">
+    <div class="table-responsive">
+      <table class="table table-striped" id="output">
+          <thead><tr><td>Name</td><td>Ward</td><td>Median Income from ACS</td></tr></thead>
+      </table>
+    </div>
+ </div>
+</div>
+
+
+<script type="text/javascript">
+  var sdk = new CitySDK();
+  var arcgis = sdk.modules.arcgis;
+  var census = sdk.modules.census;
+  census.enable("d9084c5c4a0e92c442406b5eae0f14ec71d83569");
+  function runDemo() {
+    citySDKArcGIS_Table({ 
+            "url": "http://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/CDW_Feeds/MapServer/0",
+            "where": [
+                "LICENSESTATUS='ACTIVE'",
+                "ANC='6A'"
+            ]
+        });
+  }
+
+  function citySDKArcGIS_Table(request) {
+      arcgis.APIRequest(request, function(response) {
+          var message = [];
+
+          $.map(response.features, function(feature,i) {
+              var request = {
+                  "lat": feature.geometry.y,
+                  "lng": feature.geometry.x,
+                  "level": "tract",
+                  "container": "place",
+                  "variables": [
+                      "income"
+                  ]
+              };
+
+              var callback = function(response) {
+                  $('#output  tr:last').after(
+                      '<tr><td>' + feature.attributes['TRADE_NAME'] + '</td>' +
+                      '<td>' + feature.attributes['WARD'] + '</td>' +
+                      '<td>' + response.data.income +'</td></tr>'
+                  );                        
+              };
+
+              census.APIRequest(request, callback);
+          });
+          
+      });
+  };  
+</script>

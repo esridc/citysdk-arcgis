@@ -1,0 +1,27 @@
+{
+  "name": "citysdk-arcgis",
+  "version": "0.1.0",
+  "homepage": "https://github.com/esridc/citysdk-arcgis",
+  "authors": [
+    "ajturner <aturner@esri.com>"
+  ],
+  "description": "CitySDK module for ArcGIS services",
+  "main": "index.html",
+  "keywords": [
+    "geo",
+    "maps",
+    "citysdk",
+    "opendata"
+  ],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4"
+  }
+}

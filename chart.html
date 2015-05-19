@@ -1,0 +1,84 @@
+---
+layout: default
+---
+
+
+<!-- Example row of columns -->
+<div class="row">
+  <div class="col-md-4">
+    <h2>Map</h2>
+    <p>DC Schools comparing enrollment population in 2008 and local population by block.</p>
+    <p><a class="btn btn-default" href="#" onclick="runDemo()">Run Demo</a></p>
+  </div>
+  <div class="col-md-8">
+    <div id="chart"></div>
+  </div>
+</div>
+
+<script type="text/javascript" src="http://square.github.io/crossfilter/d3.v3.min.js"></script>
+<script type="text/javascript" src="http://esri.github.io/cedar/js/vega.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script type="text/javascript" src="http://esri.github.io/cedar/js/cedar-core.js"></script>
+
+<script type="text/javascript">
+    var sdk = new CitySDK();
+    var arcgis = sdk.modules.arcgis;
+    var census = sdk.modules.census;
+    census.enable("d9084c5c4a0e92c442406b5eae0f14ec71d83569");
+
+    var data = {};
+    var chart = new Cedar({
+      "specification":"http://esri.github.io/cedar/data/templates/bubble.json",
+      "dataset":{
+        "data": data,
+        "mappings":{
+          "x": {"field":"POPULATION_ENROLLED_2008","label":"Enrollment 2008"},
+          "size": {"field":"SQUARE_FOOTAGE","label":"Square Footage"},
+          "y":{"field":"census_population","label":"Census Population"}
+        }
+      }
+    });
+
+  function updateChart(data) {    
+    chart.dataset.data = data;
+
+      chart.show({
+        renderer: "canvas",
+        elementId: "#chart",
+      });               
+  };
+
+  function runDemo() {
+    citySDKArcGIS_Chart({ 
+      // DC Public Schools
+      "url": "http://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Education_WebMercator/MapServer/5"
+    });
+  }
+  function citySDKArcGIS_Chart(service) {
+    arcgis.APIRequest(service,function(response) {
+        data = response;
+        var features = response.features.slice(0);
+        data.features = [];
+        $.map(features, function(feature,i) {
+            var request = {
+                "lat": feature.geometry.y,
+                "lng": feature.geometry.x,
+                "level": "blockGroup",
+                "container": "place",
+                "variables": [
+                    "population"
+                ]
+            };
+
+            var callback = function(response) {
+              feature.attributes.census_population = parseInt(response.data.population);
+              data.features.push(feature);
+                updateChart(data);
+            };
+
+            census.APIRequest(request, callback);
+        });
+        
+    });
+  };  
+</script>

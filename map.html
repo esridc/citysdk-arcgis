@@ -1,0 +1,62 @@
+---
+layout: default
+---
+
+
+<!-- Example row of columns -->
+<div class="row">
+  <div class="col-md-3">
+    <h2>Map</h2>
+    <p>Comparing Census counties with Maryland priority funding areas. Priority Funding Areas are existing communities and places where local governments want State investment to support future growth. </p>
+    <p><a class="btn btn-default" href="#" onclick="runDemo()">Run Demo</a></p>
+  </div>
+  <div class="col-md-9">
+    <div id="demomap"></div>
+ </div>
+</div>
+
+
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="//cdn.jsdelivr.net/leaflet.esri/latest/esri-leaflet.js"></script>
+
+    <style>
+      html, body,  #demomap {
+        width : 100%;
+        height : 400px;
+      }
+    </style>
+
+<script type="text/javascript">
+  var sdk = new CitySDK();
+  var arcgis = sdk.modules.arcgis;
+  var census = sdk.modules.census;
+  census.enable("d9084c5c4a0e92c442406b5eae0f14ec71d83569");
+  function runDemo() {
+    citySDKArcGIS_Map();
+  }
+  var map = L.map('demomap').setView([38.81403111409755, -76.849365234375], 7);
+  L.esri.basemapLayer("Gray").addTo(map);
+
+  function citySDKArcGIS_Map() {
+      var request = {
+        "state": "MD",
+        "sublevel": true,
+        "level": "state"
+      };
+
+      var callback = function(response) {
+        var myLayer = L.geoJson().addTo(map);
+        myLayer.addData(response);
+        var popupTemplate = "<h3>{NAME}</h3>";
+      };
+
+      census.GEORequest(request, callback);
+
+      var parks = new L.esri.FeatureLayer("http://mdpgis.mdp.state.md.us/arcgis/rest/services/PlanningCadastre/Priority_Funding_Areas/MapServer/0", {
+       style: function () {
+          return { color: "#70ca49", weight: 2 };
+        }
+      }).addTo(map);
+  };  
+</script>
