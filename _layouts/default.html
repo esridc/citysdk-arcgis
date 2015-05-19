@@ -16,7 +16,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</a>
+            <a class="navbar-brand" href="{{ site.url }}">{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right scrollto" style="font-size: 14px;">
@@ -24,7 +24,7 @@
               <li><a href="./start.html" class="">GeoEnrichment</a></li>
               <li><a href="./map.html" class="">Map Example</a></li>
               <li><a href="./chart.html" class="">Chart Example</a></li>
-              <li><a href="{{ site.url }}" class="contribute">Contribute</a></li>
+              <li><a href="https://github.com/esridc/citysdk-arcgis" class="contribute">Contribute</a></li>
             </ul>
           </div><!--/.navbar-collapse -->
         </div>
