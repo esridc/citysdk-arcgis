@@ -7,21 +7,26 @@ layout: default
 <div class="row">
   <div class="col-md-6">
     <h2>GeoEnrichment</h2>
-    <p>Local Business Licenses for Washington, DC compared with the Census Tract Median Income.</p>
+    <p>Compare local government data with US Census ACS indicators.</p>
     <div class="">
       <input class="form-control" type="text" id="service-url" value="http://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/CDW_Feeds/MapServer/0" /><br />
-      <textarea class="form-control" id="service-where" rows=6>[
+      <textarea class="form-control" id="service-where" rows=4>[
     "LICENSESTATUS='ACTIVE'",
     "ANC='6A'"
-  ]</textarea>
-      <select id="service-variable">
+]</textarea>
+      <select id="service-variable" class="input-lg">
         <option value="income_per_capita" default>Income Per Capita</option>
-        <option value="age" default>Age</option>
-        <option value="population" default>Population</option>
-        <option value="commute_time" default>Commute Time</option>
+        <option value="age">Age</option>
+        <option value="population">Population</option>
+        <option value="commute_time">Commute Time</option>
       </select>
     </div>
-    <p><a class="btn btn-default" href="#" onclick="runDemo()">Run Demo</a></p>
+    <p><a class="btn btn-default btn-lg" role="button" href="#" onclick="runDemo()"> 
+        <span class="glyphicon glyphicon-play"></span> Run Demo</a></p>
+
+    <hr>
+    <br />
+    <h3>Example Code</h3>
     <pre>
 var sdk = new CitySDK();
 var arcgis = sdk.modules.arcgis;
