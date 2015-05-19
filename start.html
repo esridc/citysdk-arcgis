@@ -2,12 +2,25 @@
 layout: default
 ---
 
-
+<div class="container">
 <!-- Example row of columns -->
 <div class="row">
   <div class="col-md-6">
     <h2>GeoEnrichment</h2>
     <p>Local Business Licenses for Washington, DC compared with the Census Tract Median Income.</p>
+    <div class="">
+      <input class="form-control" type="text" id="service-url" value="http://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/CDW_Feeds/MapServer/0" /><br />
+      <textarea class="form-control" id="service-where" rows=6>[
+    "LICENSESTATUS='ACTIVE'",
+    "ANC='6A'"
+  ]</textarea>
+      <select id="service-variable">
+        <option value="income_per_capita" default>Income Per Capita</option>
+        <option value="age" default>Age</option>
+        <option value="population" default>Population</option>
+        <option value="commute_time" default>Commute Time</option>
+      </select>
+    </div>
     <p><a class="btn btn-default" href="#" onclick="runDemo()">Run Demo</a></p>
     <pre>
 var sdk = new CitySDK();
@@ -21,8 +34,6 @@ service = {
   ]
 };
 arcgis.APIRequest(service, function(response) {
-  var message = [];
-
   $.map(response.features, function(feature,i) {
     var request = {
       "lat": feature.geometry.y,
@@ -35,11 +46,10 @@ arcgis.APIRequest(service, function(response) {
     };
 
     var callback = function(response) {
-      $('#output  tr:last').after(
-        '<tr><td>' + feature.attributes['TRADE_NAME'] + '</td>' +
-        '<td>' + feature.attributes['WARD'] + '</td>' +
-        '<td>' + response.data.income +'</td></tr>'
-      );                        
+        $('#output-table  tr:last').after(
+            '<tr><td>' + feature.attributes[response.displayFieldName] + '</td>' +
+            '<td>' + response.data.income +'</td></tr>'
+        );                        
     };
 
     census.APIRequest(request, callback);
@@ -49,50 +59,53 @@ arcgis.APIRequest(service, function(response) {
     </pre>
   </div>
   <div class="col-md-6">
-    <div class="table-responsive">
-      <table class="table table-striped" id="output">
-          <thead><tr><td>Name</td><td>Ward</td><td>Median Income from ACS</td></tr></thead>
-      </table>
+    <div id="output" class="table-responsive">
+      
     </div>
  </div>
 </div>
-
+</div>
 
 <script type="text/javascript">
   var sdk = new CitySDK();
   var arcgis = sdk.modules.arcgis;
   var census = sdk.modules.census;
+  var variable, where, url;
   census.enable("d9084c5c4a0e92c442406b5eae0f14ec71d83569");
   function runDemo() {
+    url = $('#service-url').val();
+    where = JSON.parse($('#service-where').val());
+    variable = $('#service-variable').val();
+    console.log("Census Variable", variable);
+
+    if(where.length == 0){
+      where = ["1=1"];
+    }
     citySDKArcGIS_Table({ 
-            "url": "http://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/CDW_Feeds/MapServer/0",
-            "where": [
-                "LICENSESTATUS='ACTIVE'",
-                "ANC='6A'"
-            ]
+            "url": url,
+            "where": where
         });
   }
 
   function citySDKArcGIS_Table(request) {
-      arcgis.APIRequest(request, function(response) {
-          var message = [];
-
-          $.map(response.features, function(feature,i) {
+      $("#output").html('<table class="table table-striped" id="output-table"> <thead><tr><td>Name</td><td>ACS ' 
+        +  $('#service-variable option:selected').text() +'</td></tr></thead> </table>');
+      arcgis.APIRequest(request, function(service) {
+          $.map(service.features, function(feature,i) {
               var request = {
                   "lat": feature.geometry.y,
                   "lng": feature.geometry.x,
-                  "level": "tract",
-                  "container": "place",
+                  "level": "place",
                   "variables": [
-                      "income"
+                      variable
                   ]
               };
+              console.log("Request", request)
 
               var callback = function(response) {
-                  $('#output  tr:last').after(
-                      '<tr><td>' + feature.attributes['TRADE_NAME'] + '</td>' +
-                      '<td>' + feature.attributes['WARD'] + '</td>' +
-                      '<td>' + response.data.income +'</td></tr>'
+                  $('#output-table  tr:last').after(
+                      '<tr><td>' + feature.attributes[service.displayFieldName] + '</td>' +
+                      '<td>' + response.data[variable] +'</td></tr>'
                   );                        
               };
 
