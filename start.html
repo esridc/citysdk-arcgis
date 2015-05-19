@@ -16,7 +16,7 @@ layout: default
 ]</textarea>
 <br/>
       <select id="service-variable" class="input-lg">
-        <option value="income_per_capita" default>Income Per Capita</option>
+        <option value="income" default>Median Income</option>
         <option value="age">Age</option>
         <option value="population">Population</option>
         <option value="commute_time">Commute Time</option>
@@ -101,7 +101,7 @@ arcgis.APIRequest(service, function(response) {
               var request = {
                   "lat": feature.geometry.y,
                   "lng": feature.geometry.x,
-                  "level": "place",
+                  "level": "blockGroup",
                   "variables": [
                       variable
                   ]
