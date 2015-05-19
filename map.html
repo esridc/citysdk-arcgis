@@ -15,7 +15,37 @@ layout: default
       <div id="demomap"></div>
    </div>
   </div>
+
+  <div class="row">
+    <hr>
+    <h3>Example Code</h3>
+    <pre>
+var map = L.map('demomap').setView([38.81403111409755, -76.849365234375], 7);
+L.esri.basemapLayer("Gray").addTo(map);
+
+var request = {
+  "state": "MD",
+  "sublevel": true,
+  "level": "state"
+};
+
+var callback = function(response) {
+  var myLayer = L.geoJson().addTo(map);
+  myLayer.addData(response);
+};
+
+census.GEORequest(request, callback);
+
+var parks = new L.esri.FeatureLayer("http://mdpgis.mdp.state.md.us/arcgis/rest/services/PlanningCadastre/Priority_Funding_Areas/MapServer/0", {
+ style: function () {
+    return { color: "#70ca49", weight: 2 };
+  }
+}).addTo(map);      
+    </pre>
+  </div>
 </div>
+
+
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="//cdn.jsdelivr.net/leaflet.esri/latest/esri-leaflet.js"></script>
