@@ -109,6 +109,7 @@ arcgis.APIRequest(service, function(response) {
               console.log("Request", request)
 
               var callback = function(response) {
+                console.log("Response", response.data[0])
                   $('#output-table  tr:last').after(
                       '<tr><td>' + feature.attributes[service.displayFieldName] + '</td>' +
                       '<td>' + response.data[0][variable] +'</td></tr>'

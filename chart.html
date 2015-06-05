@@ -72,7 +72,7 @@ layout: default
             };
 
             var callback = function(response) {
-              feature.attributes.census_population = parseInt(response.data.population);
+              feature.attributes.census_population = parseInt(response.data[0].population);
               data.features.push(feature);
                 updateChart(data);
             };
