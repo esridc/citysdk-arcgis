@@ -54,7 +54,7 @@ arcgis.APIRequest(service, function(response) {
     var callback = function(response) {
         $('#output-table  tr:last').after(
             '<tr><td>' + feature.attributes[response.displayFieldName] + '</td>' +
-            '<td>' + response.data.income +'</td></tr>'
+            '<td>' + response.data[0].income +'</td></tr>'
         );                        
     };
 
@@ -111,7 +111,7 @@ arcgis.APIRequest(service, function(response) {
               var callback = function(response) {
                   $('#output-table  tr:last').after(
                       '<tr><td>' + feature.attributes[service.displayFieldName] + '</td>' +
-                      '<td>' + response.data[variable] +'</td></tr>'
+                      '<td>' + response.data[0][variable] +'</td></tr>'
                   );                        
               };
 
