@@ -84,7 +84,8 @@ var parks = new L.esri.FeatureLayer({
 
       census.GEORequest(request, callback);
 
-      var parks = new L.esri.FeatureLayer("http://mdpgis.mdp.state.md.us/arcgis/rest/services/PlanningCadastre/Priority_Funding_Areas/MapServer/0", {
+      var parks = new L.esri.FeatureLayer({
+        url: "http://mdpgis.mdp.state.md.us/arcgis/rest/services/PlanningCadastre/Priority_Funding_Areas/MapServer/0",
        style: function () {
           return { color: "#70ca49", weight: 2 };
         }
