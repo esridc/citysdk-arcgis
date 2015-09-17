@@ -16,10 +16,10 @@ layout: default
   </div>
 </div>
 
-<script type="text/javascript" src="http://square.github.io/crossfilter/d3.v3.min.js"></script>
-<script type="text/javascript" src="http://esri.github.io/cedar/js/vega.js"></script>
+<script type="text/javascript" src="http://esri.github.io/cedar/js/d3.min.js"></script>
+<script type="text/javascript" src="http://esri.github.io/cedar/js/vega.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-<script type="text/javascript" src="http://esri.github.io/cedar/js/cedar-core.js"></script>
+<script type="text/javascript" src="http://esri.github.io/cedar/js/cedar.min.js"></script>
 
 <script type="text/javascript">
     var sdk = new CitySDK();
@@ -29,7 +29,7 @@ layout: default
 
     var data = {};
     var chart = new Cedar({
-      "specification":"http://esri.github.io/cedar/data/templates/bubble.json",
+      "type":"bubble",
       "dataset":{
         "data": data,
         "mappings":{
@@ -42,7 +42,7 @@ layout: default
 
   function updateChart(data) {    
     chart.dataset.data = data;
-
+    console.log("Data", data)
       chart.show({
         renderer: "canvas",
         elementId: "#chart",
@@ -74,7 +74,7 @@ layout: default
             var callback = function(response) {
               feature.attributes.census_population = parseInt(response.data[0].population);
               data.features.push(feature);
-                updateChart(data);
+              updateChart(data);
             };
 
             census.APIRequest(request, callback);
