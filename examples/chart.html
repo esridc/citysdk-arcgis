@@ -8,10 +8,10 @@
     <script src="https://rawgit.com/uscensusbureau/citysdk/master/js/citysdk.census.js"></script>
     <script src="../js/citysdk.arcgis.js" type="text/javascript"></script>
 
-	<script type="text/javascript" src="http://square.github.io/crossfilter/d3.v3.min.js"></script>
-	<script type="text/javascript" src="http://esri.github.io/cedar/js/vega.js"></script>
+	<script type="text/javascript" src="http://esri.github.io/cedar/js/d3.min.js"></script>
+	<script type="text/javascript" src="http://esri.github.io/cedar/js/vega.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-	<script type="text/javascript" src="http://esri.github.io/cedar/js/cedar-core.js"></script>
+	<script type="text/javascript" src="http://esri.github.io/cedar/js/cedar.min.js"></script>
 
 
     <script type="text/javascript">
@@ -23,7 +23,7 @@
 
         var data = {};
 		var chart = new Cedar({
-			"specification":"http://esri.github.io/cedar/data/templates/bubble.json",
+			"type": "bubble",
 			"dataset":{
 			  "data": data,
 			  "mappings":{
@@ -34,17 +34,17 @@
 			}
 			});
 
-        function updateChart(data) {  	
+        function updateChart(data) {
         	chart.dataset.data = data;
 
 			chart.show({
 				renderer: "canvas",
 				elementId: "#chart",
-			});              	
+			});
         }
 
         jQuery(document).ready(function() {
-            request = { 
+            request = {
             	// DC Public Schools
                 "url": "http://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Education_WebMercator/MapServer/5"
             };
@@ -74,10 +74,8 @@
                     };
 
                     census.APIRequest(request, callback);
-
-                    
                 });
-                
+
             });
         });
     </script>

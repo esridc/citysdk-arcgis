@@ -3,13 +3,13 @@
 <head>
     <title>CitySDK ArcGIS - DC Business Licenses example</title>
 
-    <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://rawgit.com/uscensusbureau/citysdk/master/js/citysdk.js"></script>
     <script type="text/javascript" src="https://rawgit.com/uscensusbureau/citysdk/master/js/citysdk.census.js"></script>
     <script src="../js/citysdk.arcgis.js" type="text/javascript"></script>
-    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
 
   <script type="text/javascript">
 
@@ -19,7 +19,7 @@
         census.enable("d9084c5c4a0e92c442406b5eae0f14ec71d83569");
 
         jQuery(document).ready(function() {
-            request = { 
+            request = {
                 "url": "http://maps2.dcgis.dc.gov/dcgis/rest/services/FEEDS/CDW_Feeds/MapServer/0",
                 "where": [
                     "LICENSESTATUS='ACTIVE'",
@@ -48,14 +48,14 @@
                             '<tr><td>' + feature.attributes['TRADE_NAME'] + '</td>' +
                             '<td>' + feature.attributes['WARD'] + '</td>' +
                             '<td>' + response.data.income +'</td></tr>'
-                        );                        
+                        );
                     };
 
                     census.APIRequest(request, callback);
 
-                    
+
                 });
-                
+
             });
         });
     </script>
