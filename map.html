@@ -36,11 +36,12 @@ var callback = function(response) {
 
 census.GEORequest(request, callback);
 
-var parks = new L.esri.FeatureLayer("http://mdpgis.mdp.state.md.us/arcgis/rest/services/PlanningCadastre/Priority_Funding_Areas/MapServer/0", {
+var parks = new L.esri.FeatureLayer({
+ url: "http://mdpgis.mdp.state.md.us/arcgis/rest/services/PlanningCadastre/Priority_Funding_Areas/MapServer/0",
  style: function () {
     return { color: "#70ca49", weight: 2 };
   }
-}).addTo(map);      
+}).addTo(map);
     </pre>
   </div>
 </div>
@@ -48,7 +49,7 @@ var parks = new L.esri.FeatureLayer("http://mdpgis.mdp.state.md.us/arcgis/rest/s
 
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-<script src="//cdn.jsdelivr.net/leaflet.esri/latest/esri-leaflet.js"></script>
+<script src="//cdn.jsdelivr.net/leaflet.esri/1.0.0/esri-leaflet.js"></script>
 
     <style>
       html, body,  #demomap {
@@ -83,10 +84,11 @@ var parks = new L.esri.FeatureLayer("http://mdpgis.mdp.state.md.us/arcgis/rest/s
 
       census.GEORequest(request, callback);
 
-      var parks = new L.esri.FeatureLayer("http://mdpgis.mdp.state.md.us/arcgis/rest/services/PlanningCadastre/Priority_Funding_Areas/MapServer/0", {
+      var parks = new L.esri.FeatureLayer({
+        url: "http://mdpgis.mdp.state.md.us/arcgis/rest/services/PlanningCadastre/Priority_Funding_Areas/MapServer/0",
        style: function () {
           return { color: "#70ca49", weight: 2 };
         }
       }).addTo(map);
-  };  
+  };
 </script>
